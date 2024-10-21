@@ -17,6 +17,7 @@ char* strcat(char* dest, const char* src) {
     return os;
 }
 
+// Find file in specified directory
 void find(char *path, char *filename)
 {
     char buf[512];
@@ -36,7 +37,7 @@ void find(char *path, char *filename)
     }
 
     if (st.type == T_DIR) {
-        while (read(fd, &de, sizeof(de)) == sizeof(de)) {  // fd thư mục hiện tại, &de thông tin thư mục hiện tại
+        while (read(fd, &de, sizeof(de)) == sizeof(de)) {
             if (de.inum == 0) {
                 continue;
             }
@@ -44,9 +45,9 @@ void find(char *path, char *filename)
                 continue;
             }
 
-            // Tạo đường dẫn bằng cách nối chuỗi
+            // create path of file
             strcpy(buf, path);               
-            if (path[strlen(path) - 1] != '/') {  // thêm /
+            if (path[strlen(path) - 1] != '/') {  // add '/'
                 strcat(buf, "/");            
             }
             strcat(buf, de.name);            
@@ -59,7 +60,7 @@ void find(char *path, char *filename)
             if (st.type == T_DIR) {
                 find(buf, filename);  
             } else if (strcmp(de.name, filename) == 0) {
-                printf("%s\n", buf);  // In đường dẫn nếu tên tệp khớp
+                printf("%s\n", buf);
             }
         }
     }
