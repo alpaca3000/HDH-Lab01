@@ -91,3 +91,17 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// hàm xử lý lệnh gọi trace
+uint64 
+sys_trace(void) 
+{ 
+  int mask;
+  // Lấy giá trị của đối số mask
+  argint(0, &mask);
+  if (mask < 0)
+    return -1;
+  // Lưu giá trị mask vào proc hiện tại
+  myproc()->trace_mask = mask;
+  return 0;
+}
