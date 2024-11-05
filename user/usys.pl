@@ -37,3 +37,4 @@ entry("sbrk");
 entry("sleep");
 entry("uptime");
 entry("trace"); # thêm stub syscal cho trace
+entry("sysinfo")
