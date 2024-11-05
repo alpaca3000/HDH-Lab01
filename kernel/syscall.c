@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "syscall.h"
 #include "defs.h"
+#include "sysinfo.h" // thêm thông tin struct sysinfo
 
 // Fetch the uint64 at addr from the current process.
 int
@@ -102,6 +103,7 @@ extern uint64 sys_link(void);
 extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
 extern uint64 sys_trace(void); // thêm systrace vào mảng syscall
+extern uint64 sys_sysinfo(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -128,6 +130,7 @@ static uint64 (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_trace]   sys_trace, // thêm sys_trace vào mảng syscalls
+[SYS_sysinfo] sys_sysinfo, // thêm sys_sysinfo vào mảng syscalls
 };
 
 // mảng ánh xạ từ mã lệnh hệ thống sang tên
@@ -153,7 +156,8 @@ static char *syscall_names[] = {
     [SYS_link]    "link",
     [SYS_mkdir]   "mkdir",
     [SYS_close]   "close",
-    [SYS_trace]   "trace"
+    [SYS_trace]   "trace",
+    [SYS_sysinfo] "sysinfo",
 };
 
 void

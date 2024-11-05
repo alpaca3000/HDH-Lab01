@@ -5,6 +5,7 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
+#include "sysinfo.h" // thêm thông tin struct sysinfo
 
 uint64
 sys_exit(void)
@@ -103,5 +104,26 @@ sys_trace(void)
     return -1;
   // Lưu giá trị mask vào proc hiện tại
   myproc()->trace_mask = mask;
+  return 0;
+}
+
+// hàm xử lý lệnh gọi sysinfo
+uint64 
+sys_sysinfo(void) 
+{
+  struct sysinfo info;
+  uint64 uinfo;
+  
+  // lấy con trỏ từ không gian người dùng
+  argaddr(0, &uinfo);
+  
+  // nhận số mem còn trống và số tiến trình
+  info.freemem = get_freemem();
+  info.nproc = get_nproc();
+
+  // copy userinfo vào không gian người dùng
+  if (copyout(myproc()->pagetable, (uint64)uinfo, (char*)&info, sizeof(info)) < 0)
+      return -1;
+  
   return 0;
 }
